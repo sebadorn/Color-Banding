@@ -1,0 +1,9 @@
+{
+	"-W097": true,
+	"browser": true,
+	"esversion": 6,
+	"globals": {
+		"ColorBanding": true,
+		"console": false
+	}
+}
