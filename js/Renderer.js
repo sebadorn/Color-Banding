@@ -7,14 +7,15 @@
 ColorBanding.Renderer = {
 
 
-	colorBuffer: null,
-	positionBuffer: null,
-
 	gl: null,
-	shaderProgram: null,
 
-	_attribLocationColor: null,
 	_attribLocationPosition: null,
+	_colorStart: null,
+	_colorEnd: null,
+	_positionBuffer: null,
+	_shaderProgram: null,
+	_uniformLocationColorEnd: null,
+	_uniformLocationColorStart: null,
 
 
 	/**
@@ -27,6 +28,9 @@ ColorBanding.Renderer = {
 			console.error( '[ColorBanding.Renderer.init] No WebGL context available.' );
 			return;
 		}
+
+		this.setColorStart( 0.216, 0.553, 0.992, 1.0 );
+		this.setColorEnd( 0.051, 0.141, 0.263, 1.0 );
 
 		this._createShaders();
 		this._createBuffers();
@@ -48,21 +52,9 @@ ColorBanding.Renderer = {
 			-1.0, -1.0
 		];
 
-		this.positionBuffer = this.gl.createBuffer();
-		this.gl.bindBuffer( this.gl.ARRAY_BUFFER, this.positionBuffer );
+		this._positionBuffer = this.gl.createBuffer();
+		this.gl.bindBuffer( this.gl.ARRAY_BUFFER, this._positionBuffer );
 		this.gl.bufferData( this.gl.ARRAY_BUFFER, new Float32Array( positions ), this.gl.STATIC_DRAW );
-
-
-		const colors = [
-			0.216, 0.553, 0.992, 1.000,
-			0.051, 0.141, 0.263, 1.000,
-			0.216, 0.553, 0.992, 1.000,
-			0.051, 0.141, 0.263, 1.000
-		];
-
-		this.colorBuffer = this.gl.createBuffer();
-		this.gl.bindBuffer( this.gl.ARRAY_BUFFER, this.colorBuffer );
-		this.gl.bufferData( this.gl.ARRAY_BUFFER, new Float32Array( colors ), this.gl.STATIC_DRAW );
 	},
 
 
@@ -86,10 +78,12 @@ ColorBanding.Renderer = {
 			);
 		}
 		else {
-			this.shaderProgram = program;
+			this._shaderProgram = program;
 
-			this._attribLocationPosition = this.gl.getAttribLocation( this.shaderProgram, 'aVertexPosition' );
-			this._attribLocationColor = this.gl.getAttribLocation( this.shaderProgram, 'aVertexColor' );
+			this._attribLocationPosition = this.gl.getAttribLocation( this._shaderProgram, 'aVertexPosition' );
+
+			this._uniformLocationColorStart = this.gl.getUniformLocation( this._shaderProgram, 'uColorStart' );
+			this._uniformLocationColorEnd = this.gl.getUniformLocation( this._shaderProgram, 'uColorEnd' );
 		}
 	},
 
@@ -98,7 +92,7 @@ ColorBanding.Renderer = {
 	 * Draw.
 	 */
 	draw() {
-		if( !this.gl || !this.shaderProgram ) {
+		if( !this.gl || !this._shaderProgram ) {
 			return;
 		}
 
@@ -109,16 +103,16 @@ ColorBanding.Renderer = {
 		this.gl.clear( this.gl.COLOR_BUFFER_BIT );
 
 		// Positions
-		this.gl.bindBuffer( this.gl.ARRAY_BUFFER, this.positionBuffer );
+		this.gl.bindBuffer( this.gl.ARRAY_BUFFER, this._positionBuffer );
 		this.gl.vertexAttribPointer( this._attribLocationPosition, 2, this.gl.FLOAT, false, 0, 0 );
 		this.gl.enableVertexAttribArray( this._attribLocationPosition );
 
-		// Colors
-		this.gl.bindBuffer( this.gl.ARRAY_BUFFER, this.colorBuffer );
-		this.gl.vertexAttribPointer( this._attribLocationColor, 4, this.gl.FLOAT, false, 0, 0 );
-		this.gl.enableVertexAttribArray( this._attribLocationColor );
+		this.gl.useProgram( this._shaderProgram );
 
-		this.gl.useProgram( this.shaderProgram );
+		// Update uniform values
+		this.gl.uniform4fv( this._uniformLocationColorStart, this._colorStart );
+		this.gl.uniform4fv( this._uniformLocationColorEnd, this._colorEnd );
+
 		this.gl.drawArrays( this.gl.TRIANGLE_STRIP, 0, 4 );
 	},
 
@@ -146,6 +140,30 @@ ColorBanding.Renderer = {
 		}
 
 		return shader;
+	},
+
+
+	/**
+	 *
+	 * @param {number} r
+	 * @param {number} g
+	 * @param {number} b
+	 * @param {number} a
+	 */
+	setColorEnd( r, g, b, a ) {
+		this._colorEnd = new Float32Array( [r, g, b, a] );
+	},
+
+
+	/**
+	 *
+	 * @param {number} r
+	 * @param {number} g
+	 * @param {number} b
+	 * @param {number} a
+	 */
+	setColorStart( r, g, b, a ) {
+		this._colorStart = new Float32Array( [r, g, b, a] );
 	}
 
 
