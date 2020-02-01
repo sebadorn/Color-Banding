@@ -8,3 +8,7 @@ body {
 	color: #FFFFFF;
 	overflow: hidden;
 }
+
+canvas:active {
+	cursor: none;
+}

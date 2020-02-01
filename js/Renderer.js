@@ -9,13 +9,18 @@ ColorBanding.Renderer = {
 
 	gl: null,
 
-	_attribLocationPosition: null,
-	_colorStart: null,
+	_colorCenter: null,
 	_colorEnd: null,
+	_colorStart: null,
 	_positionBuffer: null,
 	_shaderProgram: null,
+
+	_attribLocationPosition: null,
+
+	_uniformLocationCenter: null,
 	_uniformLocationColorEnd: null,
 	_uniformLocationColorStart: null,
+	_uniformLocationWindowRatio: null,
 
 
 	/**
@@ -29,6 +34,7 @@ ColorBanding.Renderer = {
 			return;
 		}
 
+		this.setColorCenter( 0.0, 0.0 );
 		this.setColorStart( 0.216, 0.553, 0.992, 1.0 );
 		this.setColorEnd( 0.051, 0.141, 0.263, 1.0 );
 
@@ -82,8 +88,10 @@ ColorBanding.Renderer = {
 
 			this._attribLocationPosition = this.gl.getAttribLocation( this._shaderProgram, 'aVertexPosition' );
 
+			this._uniformLocationCenter = this.gl.getUniformLocation( this._shaderProgram, 'uCenter' );
 			this._uniformLocationColorStart = this.gl.getUniformLocation( this._shaderProgram, 'uColorStart' );
 			this._uniformLocationColorEnd = this.gl.getUniformLocation( this._shaderProgram, 'uColorEnd' );
+			this._uniformLocationWindowRatio = this.gl.getUniformLocation( this._shaderProgram, 'uWindowRatio' );
 		}
 	},
 
@@ -110,8 +118,10 @@ ColorBanding.Renderer = {
 		this.gl.useProgram( this._shaderProgram );
 
 		// Update uniform values
+		this.gl.uniform2fv( this._uniformLocationCenter, this._colorCenter );
 		this.gl.uniform4fv( this._uniformLocationColorStart, this._colorStart );
 		this.gl.uniform4fv( this._uniformLocationColorEnd, this._colorEnd );
+		this.gl.uniform1f( this._uniformLocationWindowRatio, window.innerHeight / window.innerWidth );
 
 		this.gl.drawArrays( this.gl.TRIANGLE_STRIP, 0, 4 );
 	},
@@ -140,6 +150,16 @@ ColorBanding.Renderer = {
 		}
 
 		return shader;
+	},
+
+
+	/**
+	 *
+	 * @param {number} x - Relative position [-1.0, +1.0].
+	 * @param {number} y - Relative position [-1.0, +1.0].
+	 */
+	setColorCenter( x, y ) {
+		this._colorCenter = new Float32Array( [x, y] );
 	},
 
 
