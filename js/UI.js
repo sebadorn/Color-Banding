@@ -26,6 +26,11 @@ ColorBanding.UI = {
 	 * @param {MouseEvent} ev
 	 */
 	_setNewCenter( ev ) {
+		// Only react the primary button mousedowns.
+		if( ev.type === 'mousedown' && ev.buttons !== 1 ) {
+			return;
+		}
+
 		// Ignore mouse moves if no button is pressed.
 		if( ev.type === 'mousemove' && ev.buttons === 0 ) {
 			return;

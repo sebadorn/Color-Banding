@@ -1,10 +1,11 @@
 'use strict';
 
 
-ColorBanding.Renderer.vertexShader = `
-	attribute vec4 aVertexPosition;
+ColorBanding.Renderer.vertexShader = `#version 300 es
+	in vec4 aVertexPosition;
 
-	varying lowp vec2 vPos;
+	out lowp vec2 vPos;
+
 
 	void main( void ) {
 		gl_Position = aVertexPosition;

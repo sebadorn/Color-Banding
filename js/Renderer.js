@@ -20,14 +20,16 @@ ColorBanding.Renderer = {
 	_uniformLocationCenter: null,
 	_uniformLocationColorEnd: null,
 	_uniformLocationColorStart: null,
-	_uniformLocationWindowRatio: null,
+	_uniformLocationMode: null,
+	_uniformLocationTime: null,
+	_uniformLocationWindowSize: null,
 
 
 	/**
 	 *
 	 */
 	init() {
-		this.gl = ColorBanding.canvas.getContext( 'webgl' );
+		this.gl = ColorBanding.canvas.getContext( 'webgl2' );
 
 		if( !this.gl ) {
 			console.error( '[ColorBanding.Renderer.init] No WebGL context available.' );
@@ -91,7 +93,9 @@ ColorBanding.Renderer = {
 			this._uniformLocationCenter = this.gl.getUniformLocation( this._shaderProgram, 'uCenter' );
 			this._uniformLocationColorStart = this.gl.getUniformLocation( this._shaderProgram, 'uColorStart' );
 			this._uniformLocationColorEnd = this.gl.getUniformLocation( this._shaderProgram, 'uColorEnd' );
-			this._uniformLocationWindowRatio = this.gl.getUniformLocation( this._shaderProgram, 'uWindowRatio' );
+			this._uniformLocationMode = this.gl.getUniformLocation( this._shaderProgram, 'uMode' );
+			this._uniformLocationTime = this.gl.getUniformLocation( this._shaderProgram, 'uTime' );
+			this._uniformLocationWindowSize = this.gl.getUniformLocation( this._shaderProgram, 'uWindowSize' );
 		}
 	},
 
@@ -118,10 +122,12 @@ ColorBanding.Renderer = {
 		this.gl.useProgram( this._shaderProgram );
 
 		// Update uniform values
+		this.gl.uniform1i( this._uniformLocationMode, ColorBanding.getMode() );
+		this.gl.uniform1ui( this._uniformLocationTime, Date.now() );
 		this.gl.uniform2fv( this._uniformLocationCenter, this._colorCenter );
 		this.gl.uniform4fv( this._uniformLocationColorStart, this._colorStart );
 		this.gl.uniform4fv( this._uniformLocationColorEnd, this._colorEnd );
-		this.gl.uniform1f( this._uniformLocationWindowRatio, window.innerHeight / window.innerWidth );
+		this.gl.uniform2uiv( this._uniformLocationWindowSize, new Uint32Array( [window.innerWidth, window.innerHeight] ) );
 
 		this.gl.drawArrays( this.gl.TRIANGLE_STRIP, 0, 4 );
 	},
