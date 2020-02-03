@@ -28,8 +28,8 @@ ColorBanding.Renderer.fragmentShader = `#version 300 es
 
 
 	void main( void ) {
+		// Radial gradient
 		lowp float windowRatio = float( uWindowSize.y ) / float( uWindowSize.x );
-
 		lowp float xDist = vPos.x - uCenter.x;
 		lowp float yDist = ( vPos.y - uCenter.y ) * windowRatio;
 		lowp float euclideanDist = sqrt( xDist * xDist + yDist * yDist );

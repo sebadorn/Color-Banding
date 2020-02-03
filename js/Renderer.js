@@ -10,8 +10,8 @@ ColorBanding.Renderer = {
 	gl: null,
 
 	_colorCenter: null,
-	_colorEnd: null,
-	_colorStart: null,
+	_colorEnd: new Float32Array( [0.051, 0.141, 0.263, 1.0] ),
+	_colorStart: new Float32Array( [0.216, 0.553, 0.992, 1.0] ),
 	_positionBuffer: null,
 	_shaderProgram: null,
 
@@ -37,8 +37,6 @@ ColorBanding.Renderer = {
 		}
 
 		this.setColorCenter( 0.0, 0.0 );
-		this.setColorStart( 0.216, 0.553, 0.992, 1.0 );
-		this.setColorEnd( 0.051, 0.141, 0.263, 1.0 );
 
 		this._createShaders();
 		this._createBuffers();
@@ -135,6 +133,24 @@ ColorBanding.Renderer = {
 
 	/**
 	 *
+	 * @return {string}
+	 */
+	getColorEndHex() {
+		return ColorBanding.floatRGBToHex( this._colorEnd );
+	},
+
+
+	/**
+	 *
+	 * @return {string}
+	 */
+	getColorStartHex() {
+		return ColorBanding.floatRGBToHex( this._colorStart );
+	},
+
+
+	/**
+	 *
 	 * @param  {number} type
 	 * @param  {string} source
 	 * @return {?WebGLShader}
@@ -174,10 +190,23 @@ ColorBanding.Renderer = {
 	 * @param {number} r
 	 * @param {number} g
 	 * @param {number} b
-	 * @param {number} a
+	 * @param {number} [a = 1.0]
 	 */
-	setColorEnd( r, g, b, a ) {
+	setColorEnd( r, g, b, a = 1.0 ) {
 		this._colorEnd = new Float32Array( [r, g, b, a] );
+	},
+
+
+	/**
+	 *
+	 * @param {string} v
+	 */
+	setColorEndHex( v ) {
+		let r = parseInt( v.substr( 1, 2 ), 16 ) / 255.0;
+		let g = parseInt( v.substr( 3, 2 ), 16 ) / 255.0;
+		let b = parseInt( v.substr( 5, 2 ), 16 ) / 255.0;
+
+		this.setColorEnd( r, g, b );
 	},
 
 
@@ -186,10 +215,23 @@ ColorBanding.Renderer = {
 	 * @param {number} r
 	 * @param {number} g
 	 * @param {number} b
-	 * @param {number} a
+	 * @param {number} [a = 1.0]
 	 */
-	setColorStart( r, g, b, a ) {
+	setColorStart( r, g, b, a = 1.0 ) {
 		this._colorStart = new Float32Array( [r, g, b, a] );
+	},
+
+
+	/**
+	 *
+	 * @param {string} v
+	 */
+	setColorStartHex( v ) {
+		let r = parseInt( v.substr( 1, 2 ), 16 ) / 255.0;
+		let g = parseInt( v.substr( 3, 2 ), 16 ) / 255.0;
+		let b = parseInt( v.substr( 5, 2 ), 16 ) / 255.0;
+
+		this.setColorStart( r, g, b );
 	}
 
 
