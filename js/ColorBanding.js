@@ -9,12 +9,17 @@ const ColorBanding = {
 
 	canvas: null,
 
-	_mode: 1,
-
+	_mode: null,
+	_type: null,
 
 	MODE: {
 		NONE: 0,
 		DITHERING: 1
+	},
+
+	TYPE: {
+		LINEAR: 0,
+		RADIAL: 1
 	},
 
 
@@ -23,6 +28,9 @@ const ColorBanding = {
 	 */
 	init() {
 		this.canvas = document.getElementById( 'main' );
+
+		this._mode = this.MODE.DITHERING;
+		this._type = this.TYPE.RADIAL;
 
 		ColorBanding.UI.init();
 		ColorBanding.Renderer.init();
@@ -58,11 +66,29 @@ const ColorBanding = {
 
 
 	/**
+	 * Get the gradient type.
+	 * @return {number}
+	 */
+	getType() {
+		return this._type;
+	},
+
+
+	/**
 	 * Set the mode.
 	 * @param {number} mode
 	 */
 	setMode( mode ) {
 		this._mode = mode;
+	},
+
+
+	/**
+	 * Set the gradient type.
+	 * @param {number} type
+	 */
+	setType( type ) {
+		this._type = type;
 	}
 
 

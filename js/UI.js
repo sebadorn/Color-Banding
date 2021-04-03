@@ -49,6 +49,22 @@ ColorBanding.UI = {
 	 *
 	 * @private
 	 */
+	_initGradientType() {
+		const selectGradient = document.querySelector( '.gradient-type' );
+		selectGradient.value = ColorBanding.getType();
+
+		selectGradient.addEventListener( 'change', ev => {
+			let type = ev.target.value;
+			ColorBanding.setType( type );
+			ColorBanding.Renderer.draw();
+		} );
+	},
+
+
+	/**
+	 *
+	 * @private
+	 */
 	_initNoiseMode() {
 		const selectNoise = document.querySelector( '.noise-mode' );
 		selectNoise.value = ColorBanding.getMode();
@@ -67,6 +83,7 @@ ColorBanding.UI = {
 	 */
 	_initSettings() {
 		this._initColors();
+		this._initGradientType();
 		this._initNoiseMode();
 	},
 
