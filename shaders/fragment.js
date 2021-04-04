@@ -6,12 +6,15 @@ ColorBanding.Renderer.fragmentShader = `#version 300 es
 
 	uniform int uMode;
 	uniform int uType;
-	uniform lowp vec2 uCenter;
 	uniform lowp vec4 uColorEnd;
 	uniform lowp vec4 uColorStart;
 	uniform uint uTime;
-	uniform uvec2 uWindowSize;
+	uniform uvec2 uWindowSize; // Size in pixels
 
+	// Relative coordinates in range [-1.0, +1.0]
+	uniform lowp vec2 uCenter;
+
+	// Relative coordinates in range [-1.0, +1.0]
 	in lowp vec2 vPos;
 
 	out lowp vec4 fragColor;
@@ -37,7 +40,7 @@ ColorBanding.Renderer.fragmentShader = `#version 300 es
 		// Linear gradient
 		if( uType == 0 ) {
 			// Horizontal
-			f = min( 1.0, sqrt( sqrt( xDist * xDist ) ) );
+			f = abs( xDist ) * 0.5;
 		}
 		// Radial gradient
 		else if( uType == 1 ) {
