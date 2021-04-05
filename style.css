@@ -25,6 +25,11 @@ canvas:active {
 	cursor: none;
 }
 
+input[type="checkbox"] {
+	margin-right: 10px;
+	margin-top: 3px;
+}
+
 input[type="color"] {
 	border: 0;
 	cursor: pointer;
@@ -36,11 +41,11 @@ label {
 }
 
 .settings {
-	flex-basis: 200px;
+	flex-basis: 250px;
 	flex-shrink: 0;
 	overflow-y: auto;
 	padding: 20px;
-	width: 200px;
+	width: 250px;
 }
 
 	h2 {
@@ -58,6 +63,7 @@ label {
 	}
 
 	.wrap {
+		align-items: flex-start;
 		display: flex;
 		justify-content: space-between;
 		margin-bottom: 10px;
@@ -65,4 +71,8 @@ label {
 
 	.settings .wrap:last-child {
 		margin-bottom: 0;
+	}
+
+	.gradient-type {
+		margin-bottom: 10px;
 	}

@@ -21,6 +21,7 @@ ColorBanding.Renderer = {
 	_uniformLocationColorEnd: null,
 	_uniformLocationColorStart: null,
 	_uniformLocationMode: null,
+	_uniformLocationSize: null,
 	_uniformLocationTime: null,
 	_uniformLocationType: null,
 	_uniformLocationWindowSize: null,
@@ -93,6 +94,7 @@ ColorBanding.Renderer = {
 			this._uniformLocationColorStart = this.gl.getUniformLocation( this._shaderProgram, 'uColorStart' );
 			this._uniformLocationColorEnd = this.gl.getUniformLocation( this._shaderProgram, 'uColorEnd' );
 			this._uniformLocationMode = this.gl.getUniformLocation( this._shaderProgram, 'uMode' );
+			this._uniformLocationSize = this.gl.getUniformLocation( this._shaderProgram, 'uSize' );
 			this._uniformLocationTime = this.gl.getUniformLocation( this._shaderProgram, 'uTime' );
 			this._uniformLocationType = this.gl.getUniformLocation( this._shaderProgram, 'uType' );
 			this._uniformLocationWindowSize = this.gl.getUniformLocation( this._shaderProgram, 'uWindowSize' );
@@ -123,6 +125,7 @@ ColorBanding.Renderer = {
 
 		// Update uniform values
 		this.gl.uniform1i( this._uniformLocationMode, ColorBanding.getMode() );
+		this.gl.uniform1i( this._uniformLocationSize, ColorBanding.getSizeModifier() );
 		this.gl.uniform1i( this._uniformLocationType, ColorBanding.getType() );
 		this.gl.uniform1ui( this._uniformLocationTime, Date.now() );
 		this.gl.uniform2fv( this._uniformLocationCenter, this._colorCenter );

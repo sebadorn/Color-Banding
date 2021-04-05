@@ -10,6 +10,7 @@ const ColorBanding = {
 	canvas: null,
 
 	_mode: null,
+	_sizeModifier: null,
 	_type: null,
 
 	MODE: {
@@ -17,9 +18,15 @@ const ColorBanding = {
 		DITHERING: 1
 	},
 
+	SIZE_MOD: {
+		NONE: 0,
+		SQRT: 1
+	},
+
 	TYPE: {
-		LINEAR: 0,
-		RADIAL: 1
+		LINEAR_H: 0,
+		LINEAR_V: 1,
+		RADIAL: 2
 	},
 
 
@@ -30,6 +37,7 @@ const ColorBanding = {
 		this.canvas = document.getElementById( 'main' );
 
 		this._mode = this.MODE.DITHERING;
+		this._sizeModifier = this.SIZE_MOD.SQRT;
 		this._type = this.TYPE.RADIAL;
 
 		ColorBanding.UI.init();
@@ -66,6 +74,15 @@ const ColorBanding = {
 
 
 	/**
+	 * Get the size modifier.
+	 * @return {number}
+	 */
+	getSizeModifier() {
+		return this._sizeModifier;
+	},
+
+
+	/**
 	 * Get the gradient type.
 	 * @return {number}
 	 */
@@ -80,6 +97,15 @@ const ColorBanding = {
 	 */
 	setMode( mode ) {
 		this._mode = mode;
+	},
+
+
+	/**
+	 * Set the size modifier.
+	 * @param {number} sm
+	 */
+	setSizeModifier( sm ) {
+		this._sizeModifier = sm;
 	},
 
 

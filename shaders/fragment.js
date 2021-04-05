@@ -6,6 +6,7 @@ ColorBanding.Renderer.fragmentShader = `#version 300 es
 
 	uniform int uMode;
 	uniform int uType;
+	uniform int uSize;
 	uniform lowp vec4 uColorEnd;
 	uniform lowp vec4 uColorStart;
 	uniform uint uTime;
@@ -35,17 +36,26 @@ ColorBanding.Renderer.fragmentShader = `#version 300 es
 		lowp float f = 1.0;
 		lowp float windowRatio = float( uWindowSize.y ) / float( uWindowSize.x );
 		lowp float xDist = vPos.x - uCenter.x;
-		lowp float yDist = ( vPos.y - uCenter.y ) * windowRatio;
+		lowp float yDist = vPos.y - uCenter.y;
 
-		// Linear gradient
+		// Linear gradient (horizontal)
 		if( uType == 0 ) {
-			// Horizontal
 			f = abs( xDist ) * 0.5;
 		}
-		// Radial gradient
+		// Linear gradient (vertical)
 		else if( uType == 1 ) {
+			f = abs( yDist ) * 0.5;
+		}
+		// Radial gradient
+		else if( uType == 2 ) {
+			yDist *= windowRatio;
+
 			lowp float euclideanDist = sqrt( xDist * xDist + yDist * yDist );
-			f = min( 1.0, sqrt( euclideanDist ) );
+			f = min( 1.0, euclideanDist );
+		}
+
+		if( uSize == 1 ) {
+			f = sqrt( f );
 		}
 
 		fragColor = uColorStart * ( 1.0 - f ) + uColorEnd * f;

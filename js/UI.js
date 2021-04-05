@@ -7,6 +7,9 @@
 ColorBanding.UI = {
 
 
+	_timeoutResize: null,
+
+
 	/**
 	 *
 	 */
@@ -56,6 +59,20 @@ ColorBanding.UI = {
 		selectGradient.addEventListener( 'change', ev => {
 			let type = ev.target.value;
 			ColorBanding.setType( type );
+			ColorBanding.Renderer.draw();
+		} );
+
+		const sizeMod = document.querySelector( 'input#sqrt-distance' );
+		sizeMod.checked = ( ColorBanding.getSizeModifier() === ColorBanding.SIZE_MOD.SQRT );
+
+		sizeMod.addEventListener( 'change', ev => {
+			let value = ColorBanding.SIZE_MOD.NONE;
+
+			if( ev.target.checked ) {
+				value = ColorBanding.SIZE_MOD.SQRT;
+			}
+
+			ColorBanding.setSizeModifier( value );
 			ColorBanding.Renderer.draw();
 		} );
 	},
@@ -123,10 +140,18 @@ ColorBanding.UI = {
 	 */
 	updateSize() {
 		const canvas = ColorBanding.canvas;
+
+		canvas.removeAttribute( 'width' );
+		canvas.removeAttribute( 'height' );
+
 		canvas.width = canvas.offsetWidth;
 		canvas.height = canvas.offsetHeight;
 
-		ColorBanding.Renderer.draw();
+		clearTimeout( this._timeoutResize );
+
+		this._timeoutResize = setTimeout(() => {
+			ColorBanding.Renderer.draw();
+		}, 125);
 	}
 
 
