@@ -17,6 +17,14 @@ body {
 	overflow: hidden;
 }
 
+a {
+	color: #c0c0c0;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
 canvas#main {
 	flex-grow: 1;
 }
@@ -25,12 +33,20 @@ canvas:active {
 	cursor: none;
 }
 
+input,
+select,
+textarea {
+	font-family: "Open Sans", sans-serif;
+	font-size: 16px;
+}
+
 input[type="checkbox"] {
 	margin-right: 10px;
-	margin-top: 3px;
+	margin-top: 4px;
 }
 
 input[type="color"] {
+	background-color: transparent;
 	border: 0;
 	cursor: pointer;
 	min-width: 60px;
@@ -40,12 +56,16 @@ label {
 	display: inline-block;
 }
 
+label[for] {
+	cursor: pointer;
+}
+
 .settings {
-	flex-basis: 250px;
+	flex-basis: 260px;
 	flex-shrink: 0;
 	overflow-y: auto;
 	padding: 20px;
-	width: 250px;
+	width: 260px;
 }
 
 	h2 {
@@ -69,10 +89,18 @@ label {
 		margin-bottom: 10px;
 	}
 
+	.wrap-left {
+		justify-content: flex-start;
+	}
+
 	.settings .wrap:last-child {
 		margin-bottom: 0;
 	}
 
 	.gradient-type {
 		margin-bottom: 10px;
+	}
+
+	.about p {
+		font-style: italic;
 	}
