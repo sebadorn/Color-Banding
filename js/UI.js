@@ -30,20 +30,40 @@ ColorBanding.UI = {
 	 * @private
 	 */
 	_initColors() {
+		const selectPreset = document.querySelector( '.color-presets' );
+		selectPreset.addEventListener( 'change', ev => {
+			if( ev.target.value === '-1' ) {
+				return;
+			}
+
+			const values = ev.target.value.split( ';' );
+			const start = values[0].split( ',' );
+			const end = values[1].split( ',' );
+
+			ColorBanding.Renderer.setColorStart( ...start );
+			ColorBanding.Renderer.setColorEnd( ...end );
+			ColorBanding.Renderer.draw();
+
+			inputStart.value = ColorBanding.Renderer.getColorStartHex();
+			inputEnd.value = ColorBanding.Renderer.getColorEndHex();
+		} );
+
 		const inputStart = document.querySelector( '.color-start' );
 		inputStart.value = ColorBanding.Renderer.getColorStartHex();
-
 		inputStart.addEventListener( 'change', ev => {
 			ColorBanding.Renderer.setColorStartHex( ev.target.value );
 			ColorBanding.Renderer.draw();
+
+			selectPreset.selectedIndex = selectPreset.options.length - 1;
 		} );
 
 		const inputEnd = document.querySelector( '.color-end' );
 		inputEnd.value = ColorBanding.Renderer.getColorEndHex();
-
 		inputEnd.addEventListener( 'change', ev => {
 			ColorBanding.Renderer.setColorEndHex( ev.target.value );
 			ColorBanding.Renderer.draw();
+
+			selectPreset.selectedIndex = selectPreset.options.length - 1;
 		} );
 	},
 
