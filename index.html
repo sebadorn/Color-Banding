@@ -3,7 +3,7 @@
 <html>
 <head>
 	<meta charset="utf-8" />
-	<title>Color Banding</title>
+	<title>Color Banding – Interactive Demo</title>
 	<link rel="stylesheet" href="style.css" />
 	<script src="js/ColorBanding.js"></script>
 	<script src="js/Renderer.js"></script>
@@ -24,8 +24,8 @@
 		<div class="wrap">
 			<label>Presets</label>
 			<select class="color-presets">
-				<option value="0.149,0.404,0.737;0.051,0.141,0.263" selected>blue</option>
-				<option value="0.000,0.470,0.490;0.000,0.317,0.333">cyan</option>
+				<option value="0.149,0.404,0.737;0.051,0.141,0.263">blue</option>
+				<option value="0.000,0.470,0.490;0.000,0.317,0.333" selected>cyan</option>
 				<option value="0.188,0.188,0.188;0.062,0.062,0.062">gray</option>
 				<option value="0.105,0.439,0.027;0.015,0.278,0.007">green</option>
 				<option value="0.545,0.062,0.062;0.349,0.043,0.039">red</option>
@@ -52,7 +52,7 @@
 			<option value="2">Radial</option>
 		</select>
 		<div class="wrap wrap-left">
-			<input type="checkbox" id="sqrt-distance" name="sqrt-distance" value="1" checked />
+			<input type="checkbox" id="sqrt-distance" name="sqrt-distance" value="1" />
 			<label for="sqrt-distance">Use square root for distance</label>
 		</div>
 	</section>
@@ -63,6 +63,14 @@
 			<option value="0">No noise</option>
 			<option value="1">Dithering</option>
 		</select>
+	</section>
+
+	<section class="export">
+		<h2>Export</h2>
+		<div class="as-url">
+			<button class="export-url">Settings as URL</button>
+			<input type="text" class="generated-url" readonly />
+		</div>
 	</section>
 
 	<section class="about">

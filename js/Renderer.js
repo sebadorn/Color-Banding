@@ -10,8 +10,8 @@ ColorBanding.Renderer = {
 	gl: null,
 
 	_colorCenter: null,
-	_colorEnd: new Float32Array( [0.051, 0.141, 0.263, 1.0] ),
-	_colorStart: new Float32Array( [0.149, 0.404, 0.737, 1.0] ),
+	_colorEnd: new Float32Array( [0.000, 0.317, 0.333, 1.0] ),
+	_colorStart: new Float32Array( [0.000, 0.470, 0.490, 1.0] ),
 	_positionBuffer: null,
 	_shaderProgram: null,
 
@@ -31,7 +31,7 @@ ColorBanding.Renderer = {
 	 *
 	 */
 	init() {
-		this.gl = ColorBanding.canvas.getContext( 'webgl2' );
+		this.gl = ColorBanding.canvas.getContext( 'webgl2', { preserveDrawingBuffer: true } );
 
 		if( !this.gl ) {
 			console.error( '[ColorBanding.Renderer.init] No WebGL context available.' );
@@ -131,7 +131,7 @@ ColorBanding.Renderer = {
 		this.gl.uniform2fv( this._uniformLocationCenter, this._colorCenter );
 		this.gl.uniform4fv( this._uniformLocationColorStart, this._colorStart );
 		this.gl.uniform4fv( this._uniformLocationColorEnd, this._colorEnd );
-		this.gl.uniform2uiv( this._uniformLocationWindowSize, new Uint32Array( [window.innerWidth, window.innerHeight] ) );
+		this.gl.uniform2uiv( this._uniformLocationWindowSize, new Uint32Array( [this.gl.canvas.width, this.gl.canvas.height] ) );
 
 		this.gl.drawArrays( this.gl.TRIANGLE_STRIP, 0, 4 );
 	},

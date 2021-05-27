@@ -72,6 +72,35 @@ ColorBanding.UI = {
 	 *
 	 * @private
 	 */
+	_initExport() {
+		const btnURL = document.querySelector( 'button.export-url' );
+		btnURL.addEventListener( 'click', _ev => {
+			const parameters = [
+				// color start
+				'cs=' + ColorBanding.Renderer.getColorStartHex().slice( 1 ),
+				// color end
+				'ce=' + ColorBanding.Renderer.getColorEndHex().slice( 1 ),
+				// gradient
+				'g=' + ColorBanding.getTypeName(),
+				// size modifier
+				'sm=' + ColorBanding.getSizeModifier(),
+				// mode
+				'm=' + ColorBanding.getModeName()
+			];
+
+			const url = '?' + parameters.join( '&' );
+			const base = window.location.href.split( '?' )[0].split( '#' )[0];
+
+			const input = document.querySelector( 'input.generated-url' );
+			input.value = base + url;
+		} );
+	},
+
+
+	/**
+	 *
+	 * @private
+	 */
 	_initGradientType() {
 		const selectGradient = document.querySelector( '.gradient-type' );
 		selectGradient.value = ColorBanding.getType();
@@ -120,6 +149,7 @@ ColorBanding.UI = {
 	 */
 	_initSettings() {
 		this._initColors();
+		this._initExport();
 		this._initGradientType();
 		this._initNoiseMode();
 	},

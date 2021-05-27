@@ -37,8 +37,8 @@ const ColorBanding = {
 		this.canvas = document.getElementById( 'main' );
 
 		this._mode = this.MODE.DITHERING;
-		this._sizeModifier = this.SIZE_MOD.SQRT;
-		this._type = this.TYPE.RADIAL;
+		this._sizeModifier = this.SIZE_MOD.NONE;
+		this._type = this.TYPE.LINEAR_H;
 
 		ColorBanding.UI.init();
 		ColorBanding.Renderer.init();
@@ -74,6 +74,23 @@ const ColorBanding = {
 
 
 	/**
+	 * Get the mode name.
+	 * @return {?string}
+	 */
+	getModeName() {
+		const mode = this.getMode();
+
+		for( const key in this.MODE ) {
+			if( this.MODE[key] === mode ) {
+				return key.toLowerCase();
+			}
+		}
+
+		return null;
+	},
+
+
+	/**
 	 * Get the size modifier.
 	 * @return {number}
 	 */
@@ -88,6 +105,23 @@ const ColorBanding = {
 	 */
 	getType() {
 		return this._type;
+	},
+
+
+	/**
+	 * Get the gradient type as name.
+	 * @return {?string}
+	 */
+	getTypeName() {
+		const type = this.getType();
+
+		for( const key in this.TYPE ) {
+			if( this.TYPE[key] === type ) {
+				return key.toLowerCase();
+			}
+		}
+
+		return null;
 	},
 
 
