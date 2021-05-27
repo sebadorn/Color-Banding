@@ -2,6 +2,8 @@
 
 Based on this article by Adam Marrs: http://www.visualextract.com/posts/color-banding/
 
+A live demo to play around with can be found at: https://sebadorn.github.io/Color-Banding/
+
 
 ## Resources
 
