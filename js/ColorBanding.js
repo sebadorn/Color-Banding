@@ -42,6 +42,7 @@ const ColorBanding = {
 
 		ColorBanding.UI.init();
 		ColorBanding.Renderer.init();
+		this.initFromURL();
 	},
 
 
@@ -100,6 +101,23 @@ const ColorBanding = {
 
 
 	/**
+	 * Get the size modifier name.
+	 * @return {?string}
+	 */
+	getSizeModifierName() {
+		const sm = this.getSizeModifier();
+
+		for( const key in this.SIZE_MOD ) {
+			if( this.SIZE_MOD[key] === sm ) {
+				return key.toLowerCase();
+			}
+		}
+
+		return null;
+	},
+
+
+	/**
 	 * Get the gradient type.
 	 * @return {number}
 	 */
@@ -126,10 +144,111 @@ const ColorBanding = {
 
 
 	/**
+	 *
+	 */
+	initFromURL() {
+		let search = window.location.search;
+
+		if( search.length <= 1 ) {
+			return;
+		}
+
+		if( search.startsWith( '?' ) ) {
+			search = search.slice( 1 );
+		}
+
+		const params = search.split( '&' );
+
+		if( params.length === 0 ) {
+			return;
+		}
+
+		params.forEach( param => {
+			const parts = param.split( '=' );
+
+			if( parts.length !== 2 ) {
+				return;
+			}
+
+			const key = parts[0];
+			let value = decodeURIComponent( parts[1] );
+
+			switch( key ) {
+				case 'cs':
+					{
+						const inputStart = document.querySelector( '.color-start' );
+						inputStart.value = '#' + value;
+
+						const event = new CustomEvent( 'change', { target: inputStart } );
+						inputStart.dispatchEvent( event );
+					}
+					break;
+
+				case 'ce':
+					{
+						const inputEnd = document.querySelector( '.color-end' );
+						inputEnd.value = '#' + value;
+
+						const event = new CustomEvent( 'change', { target: inputEnd } );
+						inputEnd.dispatchEvent( event );
+					}
+					break;
+
+				case 'g':
+					{
+						value = value.toUpperCase();
+
+						if( typeof this.TYPE[value] !== 'undefined' ) {
+							const selectGradient = document.querySelector( '.gradient-type' );
+							selectGradient.value = this.TYPE[value];
+
+							const event = new CustomEvent( 'change', { target: selectGradient } );
+							selectGradient.dispatchEvent( event );
+						}
+					}
+					break;
+
+				case 'sm':
+					{
+						value = value.toUpperCase();
+
+						if( typeof this.SIZE_MOD[value] !== 'undefined' ) {
+							const sizeMod = document.querySelector( 'input#sqrt-distance' );
+							sizeMod.checked = ( this.SIZE_MOD[value] === ColorBanding.SIZE_MOD.SQRT );
+
+							const event = new CustomEvent( 'change', { target: sizeMod } );
+							sizeMod.dispatchEvent( event );
+						}
+					}
+					break;
+
+				case 'm':
+					{
+						value = value.toUpperCase();
+
+						if( typeof this.MODE[value] !== 'undefined' ) {
+							const selectNoise = document.querySelector( '.noise-mode' );
+							selectNoise.value = this.MODE[value];
+
+							const event = new CustomEvent( 'change', { target: selectNoise } );
+							selectNoise.dispatchEvent( event );
+						}
+					}
+					break;
+			}
+		} );
+	},
+
+
+	/**
 	 * Set the mode.
 	 * @param {number} mode
 	 */
 	setMode( mode ) {
+		if( typeof mode !== 'number' || isNaN( mode ) ) {
+			throw new Error( '[setMode] Expected value to be a number.' );
+		}
+
 		this._mode = mode;
 	},
 
@@ -139,6 +258,10 @@ const ColorBanding = {
 	 * @param {number} sm
 	 */
 	setSizeModifier( sm ) {
+		if( typeof sm !== 'number' || isNaN( sm ) ) {
+			throw new Error( '[setSizeModifier] Expected value to be a number.' );
+		}
+
 		this._sizeModifier = sm;
 	},
 
@@ -148,6 +271,10 @@ const ColorBanding = {
 	 * @param {number} type
 	 */
 	setType( type ) {
+		if( typeof type !== 'number' || isNaN( type ) ) {
+			throw new Error( '[setSizeModifier] Expected value to be a number.' );
+		}
+
 		this._type = type;
 	}
 

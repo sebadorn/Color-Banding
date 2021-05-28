@@ -83,7 +83,7 @@ ColorBanding.UI = {
 				// gradient
 				'g=' + ColorBanding.getTypeName(),
 				// size modifier
-				'sm=' + ColorBanding.getSizeModifier(),
+				'sm=' + ColorBanding.getSizeModifierName(),
 				// mode
 				'm=' + ColorBanding.getModeName()
 			];
@@ -106,7 +106,7 @@ ColorBanding.UI = {
 		selectGradient.value = ColorBanding.getType();
 
 		selectGradient.addEventListener( 'change', ev => {
-			let type = ev.target.value;
+			const type = Number( ev.target.value );
 			ColorBanding.setType( type );
 			ColorBanding.Renderer.draw();
 		} );
@@ -121,7 +121,7 @@ ColorBanding.UI = {
 				value = ColorBanding.SIZE_MOD.SQRT;
 			}
 
-			ColorBanding.setSizeModifier( value );
+			ColorBanding.setSizeModifier( Number( value ) );
 			ColorBanding.Renderer.draw();
 		} );
 	},
@@ -136,7 +136,7 @@ ColorBanding.UI = {
 		selectNoise.value = ColorBanding.getMode();
 
 		selectNoise.addEventListener( 'change', ev => {
-			let mode = ev.target.value;
+			const mode = Number( ev.target.value );
 			ColorBanding.setMode( mode );
 			ColorBanding.Renderer.draw();
 		} );

@@ -33,11 +33,31 @@ canvas:active {
 	cursor: none;
 }
 
+button,
 input,
 select,
 textarea {
+	background-color: #e0e0e0;
+	border: 0;
+	border-radius: 2px;
+	color: #000000;
 	font-family: "Open Sans", sans-serif;
 	font-size: 16px;
+	padding: 2px;
+}
+
+button {
+	cursor: pointer;
+	padding: 4px 10px;
+}
+
+button:hover {
+	background-color: #505050;
+	color: #ffffff;
+}
+
+input[readonly] {
+	opacity: 0.7;
 }
 
 input[type="checkbox"] {
@@ -100,6 +120,15 @@ label[for] {
 
 	.gradient-type {
 		margin-bottom: 10px;
+	}
+
+	.as-url input {
+		display: block;
+		font-family: monospace;
+		font-size: 13px;
+		margin-top: 5px;
+		padding: 5px;
+		width: 100%;
 	}
 
 	.about p {
