@@ -2,14 +2,13 @@
 
 
 ColorBanding.Renderer.fragmentShader = `#version 300 es
-	const uint UINT_MAX_VALUE = uint( -1 );
+	const lowp float UINT_MAX_VALUE_AS_FLOAT = float( uint( -1 ) );
 
 	uniform int uMode;
 	uniform int uType;
 	uniform int uSize;
 	uniform lowp vec4 uColorEnd;
 	uniform lowp vec4 uColorStart;
-	uniform uint uTime;
 	uniform uvec2 uWindowSize; // Size in pixels
 
 	// Relative coordinates in range [-1.0, +1.0]
@@ -21,11 +20,11 @@ ColorBanding.Renderer.fragmentShader = `#version 300 es
 	out lowp vec4 fragColor;
 
 
-	uint wang_hash( uint seed ) {
+	highp uint wang_hash( highp uint seed ) {
 		seed = ( seed ^ 61u ) ^ ( seed >> 16u );
-		seed *= 9u;
+		seed = seed * 9u;
 		seed = seed ^ ( seed >> 4u );
-		seed *= 668265261u;
+		seed = seed * 668265261u;
 		seed = seed ^ ( seed >> 15u );
 
 		return seed;
@@ -63,22 +62,23 @@ ColorBanding.Renderer.fragmentShader = `#version 300 es
 
 		// Apply dithering
 		if( uMode == 1 ) {
+			// Map relative coorindates to the range [0.0, 1.0];
 			lowp float relX = ( vPos.x + 1.0 ) * 0.5;
 			lowp float relY = ( vPos.y + 1.0 ) * 0.5;
 
-			uint pxRows = uint( max( 0.0, ceil( relY * float( uWindowSize.y ) ) - 1.0 ) );
-			uint pixelIndex = pxRows * uWindowSize.x + uint( relX * float( uWindowSize.x ) );
+			uint pxRows = uint( ceil( relY * float( uWindowSize.y ) ) );
+			highp uint pixelIndex = pxRows * uWindowSize.x + uint( relX * float( uWindowSize.x ) );
 
 			lowp vec3 rnd = vec3( 0.0, 0.0, 0.0 );
 
-			uint seed1 = wang_hash( pixelIndex + uTime );
-			rnd.x = float( seed1 ) / float( UINT_MAX_VALUE );
+			highp uint seed1 = wang_hash( pixelIndex );
+			rnd.x += float( seed1 ) / UINT_MAX_VALUE_AS_FLOAT;
 
-			uint seed2 = wang_hash( seed1 );
-			rnd.y = float( seed2 ) / float( UINT_MAX_VALUE );
+			highp uint seed2 = wang_hash( seed1 );
+			rnd.y += float( seed2 ) / UINT_MAX_VALUE_AS_FLOAT;
 
-			uint seed3 = wang_hash( seed2 );
-			rnd.z = float( seed3 ) / float( UINT_MAX_VALUE );
+			highp uint seed3 = wang_hash( seed2 );
+			rnd.z += float( seed3 ) / UINT_MAX_VALUE_AS_FLOAT;
 
 			rnd /= 255.0;
 
