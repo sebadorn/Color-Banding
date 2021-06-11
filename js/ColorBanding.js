@@ -10,12 +10,17 @@ const ColorBanding = {
 	canvas: null,
 
 	_mode: null,
+	_noiseIntensity: null,
 	_sizeModifier: null,
 	_type: null,
 
 	MODE: {
 		NONE: 0,
-		DITHERING: 1
+		WANG_HASH: 1,
+		XORSHIFT_32: 2,
+		XORSHIFT_64: 3,
+		PARK_MILLER: 4,
+		PCG_HASH: 5
 	},
 
 	SIZE_MOD: {
@@ -36,7 +41,8 @@ const ColorBanding = {
 	init() {
 		this.canvas = document.getElementById( 'main' );
 
-		this._mode = this.MODE.DITHERING;
+		this._mode = this.MODE.WANG_HASH;
+		this._noiseIntensity = 1;
 		this._sizeModifier = this.SIZE_MOD.NONE;
 		this._type = this.TYPE.LINEAR_H;
 
@@ -88,6 +94,15 @@ const ColorBanding = {
 		}
 
 		return null;
+	},
+
+
+	/**
+	 *
+	 * @return {number}
+	 */
+	getNoiseIntensity() {
+		return this._noiseIntensity;
 	},
 
 
@@ -235,6 +250,20 @@ const ColorBanding = {
 						}
 					}
 					break;
+
+				case 'ni':
+					{
+						value = parseInt( value, 10 );
+
+						if( !isNaN( value ) && 0 < value && value < 256 ) {
+							const inputIntensity = document.querySelector( '.noise-intensity' );
+							inputIntensity.value = value;
+
+							const event = new CustomEvent( 'change', { target: inputIntensity } );
+							inputIntensity.dispatchEvent( event );
+						}
+					}
+					break;
 			}
 		} );
 	},
@@ -250,6 +279,19 @@ const ColorBanding = {
 		}
 
 		this._mode = mode;
+	},
+
+
+	/**
+	 * Set the noise intensity.
+	 * @param {number} value
+	 */
+	setNoiseIntensity( value ) {
+		if( typeof value !== 'number' || isNaN( value ) ) {
+			throw new Error( '[setNoiseIntensity] Expected value to be a number.' );
+		}
+
+		this._noiseIntensity = value;
 	},
 
 

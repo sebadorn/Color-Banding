@@ -86,7 +86,9 @@ ColorBanding.UI = {
 				// size modifier
 				'sm=' + ColorBanding.getSizeModifierName(),
 				// mode
-				'm=' + ColorBanding.getModeName()
+				'm=' + ColorBanding.getModeName(),
+				// noise intensity
+				'ni=' + ColorBanding.getNoiseIntensity()
 			];
 
 			const url = '?' + parameters.join( '&' );
@@ -132,13 +134,22 @@ ColorBanding.UI = {
 	 *
 	 * @private
 	 */
-	_initNoiseMode() {
+	_initNoise() {
 		const selectNoise = document.querySelector( '.noise-mode' );
 		selectNoise.value = ColorBanding.getMode();
 
 		selectNoise.addEventListener( 'change', ev => {
 			const mode = Number( ev.target.value );
 			ColorBanding.setMode( mode );
+			ColorBanding.Renderer.draw();
+		} );
+
+		const inputIntensity = document.querySelector( '.noise-intensity' );
+		inputIntensity.value = ColorBanding.getNoiseIntensity();
+
+		inputIntensity.addEventListener( 'change', ev => {
+			const intensity = Number( ev.target.value );
+			ColorBanding.setNoiseIntensity( intensity );
 			ColorBanding.Renderer.draw();
 		} );
 	},
@@ -152,7 +163,7 @@ ColorBanding.UI = {
 		this._initColors();
 		this._initExport();
 		this._initGradientType();
-		this._initNoiseMode();
+		this._initNoise();
 	},
 
 

@@ -64,8 +64,16 @@
 		<h2>Noise</h2>
 		<select class="noise-mode">
 			<option value="0">No noise</option>
-			<option value="1">Dithering</option>
+			<option value="4">Noise (Park-Miller)</option>
+			<option value="5">Noise (PCG Hash)</option>
+			<option value="1">Noise (Wang Hash)</option>
+			<option value="2">Noise (Xorshift32)</option>
+			<option value="3">Noise (Xorshift64)</option>
 		</select>
+		<div class="intensity">
+			<label>Noise intensity</label>
+			<input type="range" class="noise-intensity" min="1" max="255" step="1" />
+		</div>
 	</section>
 
 	<section class="export">

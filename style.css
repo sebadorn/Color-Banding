@@ -72,6 +72,10 @@ input[type="color"] {
 	min-width: 60px;
 }
 
+input[type="range"] {
+	width: 100%;
+}
+
 label {
 	display: inline-block;
 	margin-right: 20px;
@@ -121,6 +125,15 @@ label[for] {
 	.gradient-type {
 		margin-bottom: 10px;
 	}
+
+	.intensity {
+		margin-top:  10px;
+	}
+
+		.intensity label {
+			display: block;
+			margin-bottom: 5px;
+		}
 
 	.as-url input {
 		display: block;
